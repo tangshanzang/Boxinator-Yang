@@ -1,4 +1,16 @@
-const createOrder = () => {
+import { useSelector, useDispatch } from 'react-redux';
+import { setColour } from '../../store/boxReducer';
+import { hexToRgb, rgbToHex } from '../../helper/myHelper';
+
+const CreateOrder = () => {
+  const { formValues } = useSelector((state) => state.boxer);
+  const dispatch = useDispatch();
+
+  const testColour = (e) => {
+    dispatch(setColour(hexToRgb(e.target.value)));
+    // console.log(formValues.colour)
+  }
+
   return (
 
     <div>
@@ -15,7 +27,7 @@ const createOrder = () => {
 
         <div className="Form-Colour">
           <label className="Label-Colour">Colour</label>
-          <input type="color" className="Input-Colour" />
+          <input type="color" className="Input-Colour" value={rgbToHex(formValues.colour)} onChange={(e) => { testColour(e) }} />
         </div>
 
         <div className="Form-Country">
@@ -37,4 +49,4 @@ const createOrder = () => {
   )
 }
 
-export default createOrder
+export default CreateOrder;
