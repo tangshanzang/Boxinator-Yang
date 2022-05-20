@@ -12,6 +12,7 @@ export function hexToRgb(hex) {
   } : null;
 }
 
-export function rgbToHex(r, g, b) {
-  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+export function rgbToHex(red, green, blue) {
+  const rgb = (red << 16) | (green << 8) | (blue << 0);
+  return '#' + (0x1000000 + rgb).toString(16).slice(1);
 }

@@ -8,7 +8,7 @@ const initialState = {
     colour: {
       r: 0,
       g: 0,
-      b: 255
+      b: 0,
     },
     country: '',
     cost: '',
@@ -22,8 +22,9 @@ export const boxSlice = createSlice({
   reducers: {
     setColour: (state, selectedColour) => {
       // console.log(selectedColour);
-      selectedColour.payload.b = 255;
+      selectedColour.payload.b = 0;
       state.formValues.colour = selectedColour.payload;
+      console.log(state.formValues.colour)
     }
   },
 })
