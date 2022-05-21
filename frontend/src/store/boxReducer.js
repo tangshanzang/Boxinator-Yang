@@ -29,10 +29,13 @@ export const boxSlice = createSlice({
     },
     setShowNewColour: (state) => {
       state.showNewColour = true;
+    },
+    setName: (state, selectedName) => {
+      state.formValues.name = selectedName.payload;
     }
   },
 })
 
-export const { setColour, setShowNewColour } = boxSlice.actions;
+export const { setColour, setShowNewColour, setName } = boxSlice.actions;
 
 export default boxSlice.reducer;

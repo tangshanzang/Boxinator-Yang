@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setColour, setShowNewColour } from '../../store/boxReducer';
+import { setColour, setShowNewColour, setName } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
 
 const CreateOrder = () => {
@@ -18,7 +18,7 @@ const CreateOrder = () => {
     dispatch(setColour(colourInRgb));
   }
 
-  const newColour = () => {
+  const newColourStyle = () => {
     let oldColour = formValues.colour;
     let newColour = rgbToHex(oldColour);
     let newStyle = {
@@ -27,13 +27,43 @@ const CreateOrder = () => {
     return newStyle;
   }
 
+  const handleSubmit = (e) => {
+
+    e.preventDefault();
+
+    const newOrder = {
+      name: formValues.name,
+      weight: formValues.weight,
+      colour: rgbToHex(formValues.colour),
+      country: formValues.country,
+    }
+
+    console.log(newOrder);
+  }
+
+  const handleInput = (e) => {
+    switch (e.target.className) {
+      case 'Input-Name': {
+        dispatch(setName(e.target.value));
+        break;
+      }
+      case 'testCase': {
+        console.log('bla');
+        break;
+      }
+      default: {
+        console.log('voof')
+      }
+    }
+  }
+
   return (
 
     <div>
       <form className="Form">
         <div className="Form-Name">
           <label className="Label-Name">Name</label>
-          <input type="text" className="Input-Name" />
+          <input type="text" className="Input-Name" onInput={(e) => { handleInput(e) }} value={formValues.name} />
         </div>
 
         <div className="Form-Weight">
@@ -45,7 +75,7 @@ const CreateOrder = () => {
           <label className="Label-Colour">Colour</label>
           <input type="color" className="Input-Colour" value={rgbToHex(formValues.colour)} onInput={(e) => { updateColour(e) }} />
           {showNewColour && <p className="newColour" >Blue colour is disabled, your selected colour would be:
-            <span style={newColour()}>{' Your New Colour'}</span>
+            <span style={newColourStyle()}>{' Your New Colour'}</span>
           </p>}
         </div>
 
@@ -61,7 +91,7 @@ const CreateOrder = () => {
         </div>
 
         <div className="Form-SaveBtn">
-          <button>Save</button>
+          <button onClick={(e) => { handleSubmit(e) }}>Save</button>
         </div>
       </form>
     </div>
