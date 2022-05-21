@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm } from '../../store/boxReducer';
+import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
 
 const CreateOrder = () => {
-  const { formValues, showNewColour } = useSelector((state) => state.boxer);
+  const { formValues, showNewColour, showNameError } = useSelector((state) => state.boxer);
   const dispatch = useDispatch();
 
   const newColourStyle = () => {
@@ -19,6 +19,9 @@ const CreateOrder = () => {
 
     e.preventDefault();
 
+    // add validation check for required fields
+    formValidation();
+
     const newOrder = {
       name: formValues.name,
       weight: formValues.weight,
@@ -26,10 +29,34 @@ const CreateOrder = () => {
       country: formValues.country,
     }
 
+    // add WS here ws.send?
+
     // add a reset form here after sending through ws;
-    resetForm();
+    // wrap this resetForm() in send function as it should only reset IF we can succesfully save order;
+    // resetForm();
 
     console.log(newOrder);
+  }
+
+  const formValidation = () => {
+    console.log('validation')
+    Object.entries(formValues).forEach(([key, value]) => {
+      console.log(key)
+      console.log(value)
+      if (value === '' || value === 'default') {
+
+        switch (key) {
+          case 'name': {
+            console.log('triggered error')
+            dispatch(setShowNameError());
+            break;
+          }
+          default: {
+            console.log('helper meow');
+          }
+        }
+      }
+    })
   }
 
   const resetForm = () => {
@@ -72,7 +99,6 @@ const CreateOrder = () => {
         break;
       }
       case 'Select-Country': {
-        // console.log(e.target.value);
         dispatch(setCountry(e.target.value));
         break;
       }
@@ -119,6 +145,7 @@ const CreateOrder = () => {
           <button onClick={(e) => { handleSubmit(e) }}>Save</button>
         </div>
       </form>
+      <p className="test">1{showNameError ? 'true' : 'false'}</p>
     </div>
   )
 }
