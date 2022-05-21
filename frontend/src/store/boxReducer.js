@@ -38,10 +38,14 @@ export const boxSlice = createSlice({
     },
     setCountry: (state, selectedCountry) => {
       state.formValues.country = selectedCountry.payload;
+    },
+    setForm: (state, resetedForm) => {
+      state.formValues = resetedForm.payload;
+      state.showNewColour = false;
     }
   },
 })
 
-export const { setColour, setShowNewColour, setName, setWeight, setCountry } = boxSlice.actions;
+export const { setColour, setShowNewColour, setName, setWeight, setCountry, setForm } = boxSlice.actions;
 
 export default boxSlice.reducer;

@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setColour, setShowNewColour, setName, setWeight, setCountry } from '../../store/boxReducer';
+import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
 
 const CreateOrder = () => {
@@ -27,8 +27,25 @@ const CreateOrder = () => {
     }
 
     // add a reset form here after sending through ws;
+    resetForm();
 
     console.log(newOrder);
+  }
+
+  const resetForm = () => {
+    let resetedForm = {
+      name: '',
+      weight: '',
+      colour: {
+        r: 0,
+        g: 0,
+        b: 0,
+      },
+      country: 'default',
+      cost: '',
+    }
+
+    dispatch(setForm(resetedForm));
   }
 
   const handleInput = (e) => {
