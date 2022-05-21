@@ -32,10 +32,13 @@ export const boxSlice = createSlice({
     },
     setName: (state, selectedName) => {
       state.formValues.name = selectedName.payload;
+    },
+    setWeight: (state, selectedWeight) => {
+      state.formValues.weight = selectedWeight.payload;
     }
   },
 })
 
-export const { setColour, setShowNewColour, setName } = boxSlice.actions;
+export const { setColour, setShowNewColour, setName, setWeight } = boxSlice.actions;
 
 export default boxSlice.reducer;

@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setColour, setShowNewColour, setName } from '../../store/boxReducer';
+import { setColour, setShowNewColour, setName, setWeight } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
 
 const CreateOrder = () => {
@@ -47,8 +47,11 @@ const CreateOrder = () => {
         dispatch(setName(e.target.value));
         break;
       }
-      case 'testCase': {
-        console.log('bla');
+      case 'Input-Weight': {
+        const min = 0.1;
+        const max = 100;
+        const value = Math.max(min, Math.min(max, Number(e.target.value)))
+        dispatch(setWeight(value));
         break;
       }
       default: {
@@ -68,7 +71,7 @@ const CreateOrder = () => {
 
         <div className="Form-Weight">
           <label className="Label-Weight">Weight</label>
-          <input type="text" className="Input-Weight" />
+          <input type="number" className="Input-Weight" onInput={(e) => { handleInput(e) }} value={formValues.weight} />
         </div>
 
         <div className="Form-Colour">
