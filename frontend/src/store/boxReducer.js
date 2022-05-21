@@ -12,7 +12,8 @@ const initialState = {
     },
     country: '',
     cost: '',
-  }
+  },
+  showNewColour: false,
 }
 
 //mutation
@@ -24,11 +25,14 @@ export const boxSlice = createSlice({
       // console.log(selectedColour);
       selectedColour.payload.b = 0;
       state.formValues.colour = selectedColour.payload;
-      console.log(state.formValues.colour)
+      // console.log(state.formValues.colour)
+    },
+    setShowNewColour: (state) => {
+      state.showNewColour = true;
     }
   },
 })
 
-export const { setColour } = boxSlice.actions;
+export const { setColour, setShowNewColour } = boxSlice.actions;
 
 export default boxSlice.reducer;

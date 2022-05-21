@@ -1,14 +1,30 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setColour } from '../../store/boxReducer';
+import { setColour, setShowNewColour } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
 
 const CreateOrder = () => {
-  const { formValues } = useSelector((state) => state.boxer);
+  const { formValues, showNewColour } = useSelector((state) => state.boxer);
   const dispatch = useDispatch();
+  // let showNewColour = false;
 
-  const testColour = (e) => {
-    dispatch(setColour(hexToRgb(e.target.value)));
-    // console.log(formValues.colour)
+  const updateColour = (e) => {
+    const colourInRgb = hexToRgb(e.target.value);
+
+    if (colourInRgb.b !== 0) {
+      // showNewColour = true;
+      dispatch(setShowNewColour());
+    }
+
+    dispatch(setColour(colourInRgb));
+  }
+
+  const newColour = () => {
+    let oldColour = formValues.colour;
+    let newColour = rgbToHex(oldColour);
+    let newStyle = {
+      color: newColour,
+    }
+    return newStyle;
   }
 
   return (
@@ -27,7 +43,10 @@ const CreateOrder = () => {
 
         <div className="Form-Colour">
           <label className="Label-Colour">Colour</label>
-          <input type="color" className="Input-Colour" value={rgbToHex(formValues.colour)} onChange={(e) => { testColour(e) }} />
+          <input type="color" className="Input-Colour" value={rgbToHex(formValues.colour)} onInput={(e) => { updateColour(e) }} />
+          {showNewColour && <p className="newColour" >Blue colour is disabled, your selected colour would be:
+            <span style={newColour()}>{' Your New Colour'}</span>
+          </p>}
         </div>
 
         <div className="Form-Country">
