@@ -52,11 +52,11 @@ export const boxSlice = createSlice({
     setShowNameError: (state, bool) => {
       state.showNameError = bool.payload;
     },
-    setShowWeightError: (state) => {
-      state.showWeightError = true;
+    setShowWeightError: (state, bool) => {
+      state.showWeightError = bool.payload;
     },
-    setShowCountryError: (state) => {
-      state.showCountryError = true;
+    setShowCountryError: (state, bool) => {
+      state.showCountryError = bool.payload;
     }
 
   },

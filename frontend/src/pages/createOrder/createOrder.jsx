@@ -41,9 +41,9 @@ const CreateOrder = () => {
   const formValidation = () => {
     Object.entries(formValues).forEach(([key, value]) => {
       // no error for colour because default colour will always exist
+      let showErrorMsg;
       switch (key) {
         case 'name': {
-          let showErrorMsg;
           if (value === '') {
             showErrorMsg = true;
           }
@@ -55,14 +55,22 @@ const CreateOrder = () => {
         }
         case 'weight': {
           if (value === '') {
-            dispatch(setShowWeightError());
+            showErrorMsg = true;
           }
+          else {
+            showErrorMsg = false;
+          }
+          dispatch(setShowWeightError(showErrorMsg));
           break;
         }
         case 'country': {
           if (value === 'default') {
-            dispatch(setShowCountryError());
+            showErrorMsg = true;
           }
+          else {
+            showErrorMsg = false;
+          }
+          dispatch(setShowCountryError(showErrorMsg));
           break;
         }
         default: {
