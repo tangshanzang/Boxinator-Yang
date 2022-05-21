@@ -112,9 +112,11 @@ const CreateOrder = () => {
         // dispatch(setWeight(value));
         // break;
 
-        if (e.target.value < 0) {
-          dispatch(setWeightErrorMsg('Weight can not be negative, it has been reset to 0'));
-          dispatch(setWeight(0));
+        // According to the description i got, it should reset to 0.
+        // However it would create a problem for cost calculation, thus i put it to 0.1
+        if (e.target.value < 0.1) {
+          dispatch(setWeightErrorMsg('Invalid inpiut, weight has been reset to our minimum weight'));
+          dispatch(setWeight(0.1));
         }
         else {
           dispatch(setWeight(e.target.value));
