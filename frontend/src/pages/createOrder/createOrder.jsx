@@ -1,22 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setColour, setShowNewColour, setName, setWeight } from '../../store/boxReducer';
+import { setColour, setShowNewColour, setName, setWeight, setCountry } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
 
 const CreateOrder = () => {
   const { formValues, showNewColour } = useSelector((state) => state.boxer);
   const dispatch = useDispatch();
-  // let showNewColour = false;
-
-  const updateColour = (e) => {
-    const colourInRgb = hexToRgb(e.target.value);
-
-    if (colourInRgb.b !== 0) {
-      // showNewColour = true;
-      dispatch(setShowNewColour());
-    }
-
-    dispatch(setColour(colourInRgb));
-  }
 
   const newColourStyle = () => {
     let oldColour = formValues.colour;
@@ -38,6 +26,8 @@ const CreateOrder = () => {
       country: formValues.country,
     }
 
+    // add a reset form here after sending through ws;
+
     console.log(newOrder);
   }
 
@@ -52,6 +42,21 @@ const CreateOrder = () => {
         const max = 100;
         const value = Math.max(min, Math.min(max, Number(e.target.value)))
         dispatch(setWeight(value));
+        break;
+      }
+      case 'Input-Colour': {
+        const colourInRgb = hexToRgb(e.target.value);
+
+        if (colourInRgb.b !== 0) {
+          dispatch(setShowNewColour());
+        }
+
+        dispatch(setColour(colourInRgb));
+        break;
+      }
+      case 'Select-Country': {
+        // console.log(e.target.value);
+        dispatch(setCountry(e.target.value));
         break;
       }
       default: {
@@ -76,15 +81,15 @@ const CreateOrder = () => {
 
         <div className="Form-Colour">
           <label className="Label-Colour">Colour</label>
-          <input type="color" className="Input-Colour" value={rgbToHex(formValues.colour)} onInput={(e) => { updateColour(e) }} />
+          <input type="color" className="Input-Colour" onInput={(e) => { handleInput(e) }} value={rgbToHex(formValues.colour)} />
           {showNewColour && <p className="newColour" >Blue colour is disabled, your selected colour would be:
             <span style={newColourStyle()}>{' Your New Colour'}</span>
           </p>}
         </div>
 
         <div className="Form-Country">
-          <label className="Form-Country">Country</label>
-          <select className="Select-Country" defaultValue='default'>
+          <label className="Label-Country">Country</label>
+          <select className="Select-Country" onInput={(e) => { handleInput(e) }} value={formValues.country}>
             <option value="default" disabled>Select Country</option>
             <option value="sweden">Sweden</option>
             <option value="china">China</option>

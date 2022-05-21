@@ -10,7 +10,7 @@ const initialState = {
       g: 0,
       b: 0,
     },
-    country: '',
+    country: 'default',
     cost: '',
   },
   showNewColour: false,
@@ -35,10 +35,13 @@ export const boxSlice = createSlice({
     },
     setWeight: (state, selectedWeight) => {
       state.formValues.weight = selectedWeight.payload;
+    },
+    setCountry: (state, selectedCountry) => {
+      state.formValues.country = selectedCountry.payload;
     }
   },
 })
 
-export const { setColour, setShowNewColour, setName, setWeight } = boxSlice.actions;
+export const { setColour, setShowNewColour, setName, setWeight, setCountry } = boxSlice.actions;
 
 export default boxSlice.reducer;
