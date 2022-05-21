@@ -19,7 +19,7 @@ const CreateOrder = () => {
 
     e.preventDefault();
 
-    // add validation check for required fields
+    // Validation check for required fields
     formValidation();
 
     const newOrder = {
@@ -54,7 +54,6 @@ const CreateOrder = () => {
           break;
         }
         case 'weight': {
-          console.log(value)
           if (value === '') {
             showErrorMsg = true;
             dispatch(setWeightErrorMsg('Please enter weight'));
