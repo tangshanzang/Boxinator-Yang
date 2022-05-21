@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError } from '../../store/boxReducer';
+import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
 
 const CreateOrder = () => {
-  const { formValues, showNewColour, showNameError } = useSelector((state) => state.boxer);
+  const { formValues, showNewColour, showNameError, showWeightError, showCountryError } = useSelector((state) => state.boxer);
   const dispatch = useDispatch();
 
   const newColourStyle = () => {
@@ -39,22 +39,36 @@ const CreateOrder = () => {
   }
 
   const formValidation = () => {
-    console.log('validation')
     Object.entries(formValues).forEach(([key, value]) => {
-      console.log(key)
-      console.log(value)
-      if (value === '' || value === 'default') {
-
-        switch (key) {
-          case 'name': {
-            console.log('triggered error')
-            dispatch(setShowNameError());
-            break;
+      // no error for colour because default colour will always exist
+      switch (key) {
+        case 'name': {
+          let showErrorMsg;
+          if (value === '') {
+            showErrorMsg = true;
           }
-          default: {
-            console.log('helper meow');
+          else {
+            showErrorMsg = false;
           }
+          dispatch(setShowNameError(showErrorMsg));
+          break;
         }
+        case 'weight': {
+          if (value === '') {
+            dispatch(setShowWeightError());
+          }
+          break;
+        }
+        case 'country': {
+          if (value === 'default') {
+            dispatch(setShowCountryError());
+          }
+          break;
+        }
+        default: {
+          console.log('helper meow');
+        }
+
       }
     })
   }
@@ -115,11 +129,13 @@ const CreateOrder = () => {
         <div className="Form-Name">
           <label className="Label-Name">Name</label>
           <input type="text" className="Input-Name" onInput={(e) => { handleInput(e) }} value={formValues.name} />
+          {showNameError && <p>Please enter name</p>}
         </div>
 
         <div className="Form-Weight">
           <label className="Label-Weight">Weight</label>
           <input type="number" className="Input-Weight" onInput={(e) => { handleInput(e) }} value={formValues.weight} />
+          {showWeightError && <p>Please enter weight</p>}
         </div>
 
         <div className="Form-Colour">
@@ -139,13 +155,13 @@ const CreateOrder = () => {
             <option value="brazil">Brazil</option>
             <option value="australia">Australia</option>
           </select>
+          {showCountryError && <p>Please select country</p>}
         </div>
 
         <div className="Form-SaveBtn">
           <button onClick={(e) => { handleSubmit(e) }}>Save</button>
         </div>
       </form>
-      <p className="test">1{showNameError ? 'true' : 'false'}</p>
     </div>
   )
 }
