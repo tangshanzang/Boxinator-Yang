@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError } from '../../store/boxReducer';
+import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError, setWeightErrorMsg } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
 
 const CreateOrder = () => {
-  const { formValues, showNewColour, showNameError, showWeightError, showCountryError } = useSelector((state) => state.boxer);
+  const { formValues, showNewColour, showNameError, showWeightError, showCountryError, weightErrorMsg } = useSelector((state) => state.boxer);
   const dispatch = useDispatch();
 
   const newColourStyle = () => {
@@ -40,7 +40,7 @@ const CreateOrder = () => {
 
   const formValidation = () => {
     Object.entries(formValues).forEach(([key, value]) => {
-      // no error for colour because default colour will always exist
+      // no error for colour because default colour will always exist (black 0,0,0)
       let showErrorMsg;
       switch (key) {
         case 'name': {
@@ -54,8 +54,10 @@ const CreateOrder = () => {
           break;
         }
         case 'weight': {
+          console.log(value)
           if (value === '') {
             showErrorMsg = true;
+            dispatch(setWeightErrorMsg('Please enter weight'));
           }
           else {
             showErrorMsg = false;
@@ -104,10 +106,19 @@ const CreateOrder = () => {
         break;
       }
       case 'Input-Weight': {
-        const min = 0.1;
-        const max = 100;
-        const value = Math.max(min, Math.min(max, Number(e.target.value)))
-        dispatch(setWeight(value));
+        // const min = 0.1;
+        // const max = 100;
+        // const value = Math.max(min, Math.min(max, Number(e.target.value)))
+        // dispatch(setWeight(value));
+        // break;
+
+        if (e.target.value < 0) {
+          dispatch(setWeightErrorMsg('Weight can not be negative, it has been reset to 0'));
+          dispatch(setWeight(0));
+        }
+        else {
+          dispatch(setWeight(e.target.value));
+        }
         break;
       }
       case 'Input-Colour': {
@@ -143,7 +154,7 @@ const CreateOrder = () => {
         <div className="Form-Weight">
           <label className="Label-Weight">Weight</label>
           <input type="number" className="Input-Weight" onInput={(e) => { handleInput(e) }} value={formValues.weight} />
-          {showWeightError && <p>Please enter weight</p>}
+          {showWeightError && <p>{weightErrorMsg}</p>}
         </div>
 
         <div className="Form-Colour">

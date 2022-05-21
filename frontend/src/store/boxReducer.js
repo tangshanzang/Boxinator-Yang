@@ -17,6 +17,7 @@ const initialState = {
   showNameError: false,
   showWeightError: false,
   showCountryError: false,
+  weightErrorMsg: '',
 }
 
 //mutation
@@ -57,11 +58,14 @@ export const boxSlice = createSlice({
     },
     setShowCountryError: (state, bool) => {
       state.showCountryError = bool.payload;
+    },
+    setWeightErrorMsg: (state, msg) => {
+      state.weightErrorMsg = msg.payload;
     }
 
   },
 })
 
-export const { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError } = boxSlice.actions;
+export const { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError, setWeightErrorMsg } = boxSlice.actions;
 
 export default boxSlice.reducer;
