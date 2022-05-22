@@ -68,6 +68,7 @@ public class BoxRepository {
 
     // get all orders
     public ArrayList<BoxOrder> getAllOrders(){
+        initTable();
         ArrayList<BoxOrder> resultList = new ArrayList<>();
 
         try {

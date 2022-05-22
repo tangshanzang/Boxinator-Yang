@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError, setWeightErrorMsg, setAllOrdersFromDB } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
+// import { useEffect } from 'react';
 
 const CreateOrder = () => {
   const { formValues, showNewColour, showNameError, showWeightError, showCountryError, weightErrorMsg } = useSelector((state) => state.boxer);
@@ -41,7 +42,9 @@ const CreateOrder = () => {
       createOrderWss.onmessage = (list) => {
         let orderListFromDB = JSON.parse(list.data);
         dispatch(setAllOrdersFromDB(orderListFromDB));
+        createOrderWss.close();
       }
+
     }
   }
 
