@@ -5,6 +5,7 @@ import { hexToRgb, rgbToHex } from '../../helper/myHelper';
 const CreateOrder = () => {
   const { formValues, showNewColour, showNameError, showWeightError, showCountryError, weightErrorMsg } = useSelector((state) => state.boxer);
   const dispatch = useDispatch();
+  const createOrderWss = new WebSocket('ws://localhost:4000/createorder');
 
   const newColourStyle = () => {
     let oldColour = formValues.colour;
@@ -20,25 +21,36 @@ const CreateOrder = () => {
     e.preventDefault();
 
     // Validation check for required fields
-    formValidation();
+    // If validation pass
+    if (formValidation()) {
+      // Create obj
+      const newOrder = {
+        name: formValues.name,
+        weight: formValues.weight,
+        colour: rgbToHex(formValues.colour),
+        country: formValues.country,
+      }
 
-    const newOrder = {
-      name: formValues.name,
-      weight: formValues.weight,
-      colour: rgbToHex(formValues.colour),
-      country: formValues.country,
+      console.log(newOrder);
+
+      // WS
+      createOrderWss.send('test')
+
+
     }
 
     // add WS here ws.send?
+    // if (showNameError === false && showWeightError===false && ) {
+    //   createBoxOrderWss
+    // }
 
     // add a reset form here after sending through ws;
     // wrap this resetForm() in send function as it should only reset IF we can succesfully save order;
     // resetForm();
-
-    console.log(newOrder);
   }
 
   const formValidation = () => {
+    let isFormValid = true;
     Object.entries(formValues).forEach(([key, value]) => {
       // no error for colour because default colour will always exist (black 0,0,0)
       let showErrorMsg;
@@ -46,6 +58,7 @@ const CreateOrder = () => {
         case 'name': {
           if (value === '') {
             showErrorMsg = true;
+            isFormValid = false;
           }
           else {
             showErrorMsg = false;
@@ -56,6 +69,7 @@ const CreateOrder = () => {
         case 'weight': {
           if (value === '') {
             showErrorMsg = true;
+            isFormValid = false;
             dispatch(setWeightErrorMsg('Please enter weight'));
           }
           else {
@@ -67,6 +81,7 @@ const CreateOrder = () => {
         case 'country': {
           if (value === 'default') {
             showErrorMsg = true;
+            isFormValid = false;
           }
           else {
             showErrorMsg = false;
@@ -77,9 +92,9 @@ const CreateOrder = () => {
         default: {
           console.log('helper meow');
         }
-
       }
     })
+    return isFormValid;
   }
 
   const resetForm = () => {
