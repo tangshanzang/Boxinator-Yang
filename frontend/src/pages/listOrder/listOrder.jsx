@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setAllOrdersFromDB } from '../../store/boxReducer';
 
 const ListOrder = () => {
-  const { allOrdersFromDB } = useSelector((state) => state.boxer);
+  const { allOrdersFromDBReversed } = useSelector((state) => state.boxer);
   const dispatch = useDispatch();
   const getOrdersWss = new WebSocket('ws://localhost:4000/getorders');
 
@@ -21,7 +21,7 @@ const ListOrder = () => {
     <div>
       <button className="btn" onClick={fetchAllOrders}>111</button>
       <div className='orderDetailsComponent'>
-        {allOrdersFromDB.map((order, index) => {
+        {allOrdersFromDBReversed.map((order, index) => {
           return <OrderDetails order={order} key={index} />
         })}
       </div>

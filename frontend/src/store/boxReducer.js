@@ -19,6 +19,7 @@ const initialState = {
   showCountryError: false,
   weightErrorMsg: '',
   allOrdersFromDB: [],
+  allOrdersFromDBReversed: [],
 }
 
 //mutation
@@ -65,6 +66,7 @@ export const boxSlice = createSlice({
     },
     setAllOrdersFromDB: (state, allOrders) => {
       state.allOrdersFromDB = allOrders.payload;
+      state.allOrdersFromDBReversed = state.allOrdersFromDB.reverse();
     }
 
   },
