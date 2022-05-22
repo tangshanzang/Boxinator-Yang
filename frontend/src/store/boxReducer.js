@@ -20,6 +20,7 @@ const initialState = {
   weightErrorMsg: '',
   allOrdersFromDB: [],
   allOrdersFromDBReversed: [],
+  hasConnected: false,
 }
 
 //mutation
@@ -67,6 +68,9 @@ export const boxSlice = createSlice({
     setAllOrdersFromDB: (state, allOrders) => {
       state.allOrdersFromDB = allOrders.payload;
       state.allOrdersFromDBReversed = state.allOrdersFromDB.reverse();
+    },
+    setHasConnected: (state, hasConnected) => {
+      state.hasConnected = hasConnected.payload;
     }
 
   },
@@ -74,6 +78,7 @@ export const boxSlice = createSlice({
 
 export const { setColour, setShowNewColour, setName, setWeight,
   setCountry, setForm, setShowNameError, setShowWeightError,
-  setShowCountryError, setWeightErrorMsg, setAllOrdersFromDB } = boxSlice.actions;
+  setShowCountryError, setWeightErrorMsg, setAllOrdersFromDB,
+  setHasConnected } = boxSlice.actions;
 
 export default boxSlice.reducer;

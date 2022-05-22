@@ -1,12 +1,34 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError, setWeightErrorMsg, setAllOrdersFromDB } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
-// import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 const CreateOrder = () => {
   const { formValues, showNewColour, showNameError, showWeightError, showCountryError, weightErrorMsg } = useSelector((state) => state.boxer);
   const dispatch = useDispatch();
-  const createOrderWss = new WebSocket('ws://localhost:4000/createorder');
+  const ws = useRef(null);
+
+  useEffect(() => {
+    ws.current = new WebSocket('ws://localhost:4000/createorder');
+    ws.current.onopen = () => console.log("ws opened");
+    ws.current.onclose = () => console.log("ws closed");
+
+    const wsCurrent = ws.current;
+
+    return () => {
+      wsCurrent.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!ws.current) return;
+
+    ws.current.onmessage = e => {
+      let orderListFromDB = JSON.parse(e.data);
+      dispatch(setAllOrdersFromDB(orderListFromDB));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const newColourStyle = () => {
     let oldColour = formValues.colour;
@@ -29,22 +51,13 @@ const CreateOrder = () => {
         country: formValues.country,
       }
 
-      // Send to backedn via Wss
-      createOrderWss.send(
+      ws.current.send(
         JSON.stringify(newOrder)
       )
 
       // Confirmation && reset form
       alert("Order has been saved");
       resetForm();
-
-      // Update order list on the listOrder page
-      createOrderWss.onmessage = (list) => {
-        let orderListFromDB = JSON.parse(list.data);
-        dispatch(setAllOrdersFromDB(orderListFromDB));
-        createOrderWss.close();
-      }
-
     }
   }
 

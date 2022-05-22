@@ -1,18 +1,33 @@
 import OrderDetails from '../../component/orderDetails/orderDetails'
 import { useSelector, useDispatch } from 'react-redux';
 import { setAllOrdersFromDB } from '../../store/boxReducer';
+import { useEffect, useRef } from 'react';
 
 const ListOrder = () => {
   const { allOrdersFromDBReversed } = useSelector((state) => state.boxer);
   const dispatch = useDispatch();
-  const getOrdersWss = new WebSocket('ws://localhost:4000/getorders');
+  const ws = useRef(null);
 
-  getOrdersWss.onopen = () => getOrdersWss.send(JSON.stringify('Load order lists'));
+  useEffect(() => {
+    ws.current = new WebSocket('ws://localhost:4000/getorders');
+    const wsCurrent = ws.current;
 
-  getOrdersWss.onmessage = (list) => {
-    let orderListFromDB = JSON.parse(list.data);
-    dispatch(setAllOrdersFromDB(orderListFromDB));
-  }
+    return () => {
+      wsCurrent.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!ws.current) return;
+
+    ws.current.onopen = () => ws.current.send(JSON.stringify('Load order lists'));
+
+    ws.current.onmessage = e => {
+      let orderListFromDB = JSON.parse(e.data);
+      dispatch(setAllOrdersFromDB(orderListFromDB));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
