@@ -13,7 +13,7 @@ const orderDetails = (props) => {
       </div>
       <div className="boxColour">
         <p>Box colour</p>
-        <p>1{props.order.colour}</p>
+        <p>{props.order.colour}</p>
       </div>
       <div className="shippingCost">
         <p>Shipping cost</p>

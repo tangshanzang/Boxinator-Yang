@@ -78,18 +78,24 @@ public class BoxRepository {
             ResultSet result = statement.executeQuery();
             while(result.next()){
                 BoxOrder tempOrder = new BoxOrder();
+                //name
                 String name = result.getString("name");
-                System.out.println(name);
-
                 tempOrder.setName(name);
-
-                // test
+                //weight
+                double weight = result.getDouble("weight");
+                tempOrder.setWeight(weight);
+                //colour
+                String colour = result.getString("colour");
+                tempOrder.setColour(colour);
+                //country
+                String country = result.getString("country");
+                tempOrder.setCountry(country);
+                //cost
+                double cost = result.getDouble("cost");
+                tempOrder.setCost(cost);
+                //add to list
                 resultList.add(tempOrder);
             }
-
-
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

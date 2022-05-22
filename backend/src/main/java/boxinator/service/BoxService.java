@@ -19,6 +19,7 @@ public class BoxService {
         String msg = "";
         double calculatedCost = calculateCost(newOrder.getCountry(), newOrder.getWeight());
         newOrder.setCost(calculatedCost);
+//        System.out.println(newOrder);
 
         if(boxRepository.addOrderToDB(newOrder)){
             msg = "Order has been saved to DB";

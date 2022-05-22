@@ -10,6 +10,7 @@ const ListOrder = () => {
   getOrdersWss.onmessage = (list) => {
     let orderListFromDB = JSON.parse(list.data);
     dispatch(setAllOrdersFromDB(orderListFromDB));
+    // console.log(orderListFromDB)
   }
 
   const fetchAllOrders = () => {

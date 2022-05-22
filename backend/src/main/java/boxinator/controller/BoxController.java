@@ -2,13 +2,7 @@ package boxinator.controller;
 
 import boxinator.entity.BoxOrder;
 import boxinator.service.BoxService;
-import com.google.gson.Gson;
 import express.Express;
-import org.eclipse.jetty.util.ajax.JSON;
-
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.util.List;
 
 public class BoxController {
 
@@ -32,10 +26,7 @@ public class BoxController {
         app.ws("/getorders", ws -> {
             ws.onMessage(ctx -> {
                 ctx.send(boxService.getAllOrders());
-
-//                JSON.parse(boxService.getAllOrders());
-                // create an object output stream from the output stream so we can send an object through it
-
+//                System.out.println(boxService.getAllOrders());
             });
         });
     }
