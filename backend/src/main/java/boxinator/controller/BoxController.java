@@ -23,13 +23,6 @@ public class BoxController {
             ws.onMessage(ctx -> {
                 System.out.println(ctx.message());
             });
-//
-//        app.ws("/createBox", ws -> {
-//            ws.onMessage(ctx -> {
-//                System.out.println('1');
-//                ctx.send(boxService);
-//            });
-//        });
         });
     }
 }

@@ -34,7 +34,9 @@ const CreateOrder = () => {
       console.log(newOrder);
 
       // WS
-      createOrderWss.send('test')
+      createOrderWss.send(
+        JSON.stringify(newOrder)
+      )
 
 
     }
