@@ -12,10 +12,17 @@ public class BoxService {
         this.boxRepository = boxRepository;
     }
 
-    public boolean createOrder(BoxOrder newOrder){
+    public String createOrder(BoxOrder newOrder){
+        String msg = "";
         double calculatedCost = calculateCost(newOrder.getCountry(), newOrder.getWeight());
         newOrder.setCost(calculatedCost);
-        return boxRepository.addOrderToDB(newOrder);
+
+        if(boxRepository.addOrderToDB(newOrder)){
+            msg = "Order has been saved to DB";
+        }else{
+            msg = "Order failed";
+        }
+        return msg;
     }
 
     public double calculateCost(String country, Double weight){

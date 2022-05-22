@@ -22,9 +22,8 @@ public class BoxController {
 //                System.out.println("connected"));
 
             ws.onMessage(ctx -> {
-                System.out.println(ctx.message());
-                boxService.createOrder(ctx.message(BoxOrder.class));
-                ctx.send("test");
+//                System.out.println(ctx.message());
+                ctx.send(boxService.createOrder(ctx.message(BoxOrder.class)));
             });
         });
     }
