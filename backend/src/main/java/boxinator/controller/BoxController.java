@@ -18,15 +18,14 @@ public class BoxController {
     private void initWebSocketHandler() {
         app.ws("/createorder", ws -> {
             ws.onMessage(ctx -> {
-//                System.out.println(ctx.message());
-                ctx.send(boxService.createOrder(ctx.message(BoxOrder.class)));
+                boxService.createOrder(ctx.message(BoxOrder.class));
+                ctx.send(boxService.getAllOrders());
             });
         });
 
         app.ws("/getorders", ws -> {
             ws.onMessage(ctx -> {
                 ctx.send(boxService.getAllOrders());
-//                System.out.println(boxService.getAllOrders());
             });
         });
     }

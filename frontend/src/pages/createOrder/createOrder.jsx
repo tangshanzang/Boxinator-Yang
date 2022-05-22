@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError, setWeightErrorMsg } from '../../store/boxReducer';
+import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError, setWeightErrorMsg, setAllOrdersFromDB } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
 
 const CreateOrder = () => {
@@ -38,11 +38,11 @@ const CreateOrder = () => {
         JSON.stringify(newOrder)
       )
 
-      createOrderWss.onmessage = (msg) => {
-        console.log(msg.data);
+      createOrderWss.onmessage = (list) => {
+        console.log("updating order list");
+        let orderListFromDB = JSON.parse(list.data);
+        dispatch(setAllOrdersFromDB(orderListFromDB));
       }
-
-
     }
 
     // add WS here ws.send?
@@ -126,16 +126,11 @@ const CreateOrder = () => {
         break;
       }
       case 'Input-Weight': {
-        // const min = 0.1;
-        // const max = 100;
-        // const value = Math.max(min, Math.min(max, Number(e.target.value)))
-        // dispatch(setWeight(value));
-        // break;
-
         // According to the description i got, it should reset to 0.
         // However it would create a problem for cost calculation, thus i put it to 0.1
         if (e.target.value < 0.1) {
           dispatch(setWeightErrorMsg('Invalid inpiut, weight has been reset to our minimum weight'));
+          dispatch(setShowWeightError(true));
           dispatch(setWeight(0.1));
         }
         else {
