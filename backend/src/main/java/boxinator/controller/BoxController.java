@@ -1,5 +1,6 @@
 package boxinator.controller;
 
+import boxinator.entity.BoxOrder;
 import boxinator.service.BoxService;
 import express.Express;
 
@@ -22,7 +23,7 @@ public class BoxController {
 
             ws.onMessage(ctx -> {
                 System.out.println(ctx.message());
-                boxService.createOrder(ctx.message());
+                boxService.createOrder(ctx.message(BoxOrder.class));
             });
         });
     }

@@ -1,5 +1,6 @@
 package boxinator.service;
 
+import boxinator.entity.BoxOrder;
 import boxinator.repository.BoxRepository;
 
 
@@ -11,8 +12,9 @@ public class BoxService {
         this.boxRepository = boxRepository;
     }
 
-    public boolean createOrder(Object newOrder){
-//        return boxRepository.addOrderToDB(newOrder);
-        return false;
+    public boolean createOrder(BoxOrder newOrder){
+        // add price calculation!
+        // update cost before saving
+        return boxRepository.addOrderToDB(newOrder);
     }
 }

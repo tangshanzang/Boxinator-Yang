@@ -1,8 +1,10 @@
 package boxinator.repository;
 
 import boxinator.db.DBConnector;
+import boxinator.entity.BoxOrder;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -35,5 +37,34 @@ public class BoxRepository {
     }
 
 //    addOrderToDB
+
+    public boolean addOrderToDB(BoxOrder newOrder){
+        boolean savedToDB = true;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO boxes (name, weight, colour, country, cost) VALUES (?,?,?,?,?)"
+            );
+            statement.setString(1, newOrder.getName());
+            statement.setInt(2, newOrder.getWeight());
+            statement.setString(3, newOrder.getColour());
+            statement.setString(4, newOrder.getCountry());
+            statement.setInt(5, newOrder.getCost());
+
+            int resultSet = statement.executeUpdate();
+
+            if(resultSet != 1){
+                savedToDB = false;
+            }
+
+            statement.close();
+            // connection.close()?
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            savedToDB = false;
+        }
+        return savedToDB;
+    }
 
 }
