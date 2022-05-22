@@ -2,12 +2,12 @@ package boxinator.entity;
 
 public class BoxOrder {
     private String name, country, colour;
-    private int weight, cost;
+    private double weight, cost;
 
     public BoxOrder() {
     }
 
-    public BoxOrder(String name, String country, String colour, int weight, int cost) {
+    public BoxOrder(String name, String country, String colour, double weight, double cost) {
         this.name = name;
         this.country = country;
         this.colour = colour;
@@ -39,19 +39,19 @@ public class BoxOrder {
         this.colour = colour;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 
-    public int getCost() {
+    public double getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(double cost) {
         this.cost = cost;
     }
 

@@ -46,10 +46,10 @@ public class BoxRepository {
                     "INSERT INTO boxes (name, weight, colour, country, cost) VALUES (?,?,?,?,?)"
             );
             statement.setString(1, newOrder.getName());
-            statement.setInt(2, newOrder.getWeight());
+            statement.setDouble(2, newOrder.getWeight());
             statement.setString(3, newOrder.getColour());
             statement.setString(4, newOrder.getCountry());
-            statement.setInt(5, newOrder.getCost());
+            statement.setDouble(5, newOrder.getCost());
 
             int resultSet = statement.executeUpdate();
 

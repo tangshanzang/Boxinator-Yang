@@ -38,6 +38,10 @@ const CreateOrder = () => {
         JSON.stringify(newOrder)
       )
 
+      createOrderWss.onmessage = (msg) => {
+        console.log(msg.data);
+      }
+
 
     }
 

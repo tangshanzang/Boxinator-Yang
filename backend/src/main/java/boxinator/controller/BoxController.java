@@ -24,6 +24,7 @@ public class BoxController {
             ws.onMessage(ctx -> {
                 System.out.println(ctx.message());
                 boxService.createOrder(ctx.message(BoxOrder.class));
+                ctx.send("test");
             });
         });
     }
