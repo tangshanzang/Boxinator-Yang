@@ -3,6 +3,9 @@ package boxinator.service;
 import boxinator.entity.BoxOrder;
 import boxinator.repository.BoxRepository;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 
 public class BoxService {
 
@@ -23,6 +26,10 @@ public class BoxService {
             msg = "Order failed";
         }
         return msg;
+    }
+
+    public ArrayList<BoxOrder> getAllOrders(){
+        return boxRepository.getAllOrders();
     }
 
     public double calculateCost(String country, Double weight){

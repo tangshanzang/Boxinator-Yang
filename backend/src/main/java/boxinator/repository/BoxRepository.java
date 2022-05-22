@@ -3,10 +3,9 @@ package boxinator.repository;
 import boxinator.db.DBConnector;
 import boxinator.entity.BoxOrder;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class BoxRepository {
     // connect to JDBC
@@ -65,6 +64,37 @@ public class BoxRepository {
             savedToDB = false;
         }
         return savedToDB;
+    }
+
+    // get all orders
+    public ArrayList<BoxOrder> getAllOrders(){
+        ArrayList<BoxOrder> resultList = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * from boxes"
+            );
+
+            ResultSet result = statement.executeQuery();
+            while(result.next()){
+                BoxOrder tempOrder = new BoxOrder();
+                String name = result.getString("name");
+                System.out.println(name);
+
+                tempOrder.setName(name);
+
+                // test
+                resultList.add(tempOrder);
+            }
+
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultList;
     }
 
 }
