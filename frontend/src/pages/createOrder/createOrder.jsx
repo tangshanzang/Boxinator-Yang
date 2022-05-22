@@ -17,10 +17,7 @@ const CreateOrder = () => {
   }
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
-
-    // Validation check for required fields
     // If validation pass
     if (formValidation()) {
       // Create obj
@@ -31,28 +28,21 @@ const CreateOrder = () => {
         country: formValues.country,
       }
 
-      console.log(newOrder);
-
-      // WS
+      // Send to backedn via Wss
       createOrderWss.send(
         JSON.stringify(newOrder)
       )
 
+      // Confirmation && reset form
+      alert("Order has been saved");
+      resetForm();
+
+      // Update order list on the listOrder page
       createOrderWss.onmessage = (list) => {
-        console.log("updating order list");
         let orderListFromDB = JSON.parse(list.data);
         dispatch(setAllOrdersFromDB(orderListFromDB));
       }
     }
-
-    // add WS here ws.send?
-    // if (showNameError === false && showWeightError===false && ) {
-    //   createBoxOrderWss
-    // }
-
-    // add a reset form here after sending through ws;
-    // wrap this resetForm() in send function as it should only reset IF we can succesfully save order;
-    // resetForm();
   }
 
   const formValidation = () => {
@@ -96,7 +86,6 @@ const CreateOrder = () => {
           break;
         }
         default: {
-          console.log('helper meow');
         }
       }
     })
@@ -107,11 +96,7 @@ const CreateOrder = () => {
     let resetedForm = {
       name: '',
       weight: '',
-      colour: {
-        r: 0,
-        g: 0,
-        b: 0,
-      },
+      colour: '',
       country: 'default',
       cost: '',
     }
@@ -153,7 +138,6 @@ const CreateOrder = () => {
         break;
       }
       default: {
-        console.log('voof')
       }
     }
   }

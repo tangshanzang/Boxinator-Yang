@@ -4,15 +4,13 @@ import CreateOrder from './pages/createOrder/createOrder';
 import ListOrder from './pages/listOrder/listOrder';
 
 function App() {
-  const createOrderWss = new WebSocket('ws://localhost:4000/createorder');
-  const getOrdersWss = new WebSocket('ws://localhost:4000/getorders');
   return (
     <div className="App">
       <Header />
 
       <Routes>
-        <Route path='/addbox' createOrderWss={createOrderWss} element={<CreateOrder />}></Route>
-        <Route path='/listboxes' getOrdersWss={getOrdersWss} element={<ListOrder />}></Route>
+        <Route path='/addbox' element={<CreateOrder />}></Route>
+        <Route path='/listboxes' element={<ListOrder />}></Route>
       </Routes>
     </div>
   );
