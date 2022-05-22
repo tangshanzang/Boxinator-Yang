@@ -2,7 +2,6 @@ package boxinator.service;
 
 import boxinator.repository.BoxRepository;
 
-import java.sql.SQLException;
 
 public class BoxService {
 
@@ -10,5 +9,9 @@ public class BoxService {
 
     public BoxService(BoxRepository boxRepository) {
         this.boxRepository = boxRepository;
+    }
+
+    public boolean createOrder(Object newOrder){
+//        return boxRepository.addOrderToDB(newOrder);
     }
 }
