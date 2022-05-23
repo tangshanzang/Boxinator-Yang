@@ -15,10 +15,22 @@ public class BoxRepository {
         initTable();
     }
 
+    // create DB if not exists
+    public void initDB(){
+        try {
+            Statement st = connection.createStatement();
+            int Result = st.executeUpdate("CREATE DATABASE IF NOT EXISTS boxinator");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // create table if not exists
     public void initTable(){
         try{
-            String query = "create table if not exists boxes( "
+            initDB();
+
+            String query = "CREATE TABLE IF NOT EXISTS boxinator.boxes( "
                     + " id INT PRIMARY KEY not Null AUTO_INCREMENT,"
                     + " name VARCHAR(80) not NULL,"
                     + " weight DOUBLE not NULL,"
@@ -42,7 +54,7 @@ public class BoxRepository {
 
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO boxes (name, weight, colour, country, cost) VALUES (?,?,?,?,?)"
+                    "INSERT INTO boxinator.boxes (name, weight, colour, country, cost) VALUES (?,?,?,?,?)"
             );
             statement.setString(1, newOrder.getName());
             statement.setDouble(2, newOrder.getWeight());
@@ -73,7 +85,7 @@ public class BoxRepository {
 
         try {
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * from boxes"
+                    "SELECT * from boxinator.boxes"
             );
 
             ResultSet result = statement.executeQuery();

@@ -64,6 +64,8 @@ const ListOrder = () => {
           return <OrderDetails order={order} key={index} />
         })}
       </div>
+      {allOrdersFromDBReversed.length < 1 ?
+        <h2>We have no orders yet!</h2> : ''}
       <div className="summaryContainer">
         <div className="totalWeightContainer">
           <div className="totalWeightTitle">

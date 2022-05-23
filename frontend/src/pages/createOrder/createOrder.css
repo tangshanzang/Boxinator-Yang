@@ -45,7 +45,8 @@ select,
   text-align: left;
 }
 
-.Form .Form-pickerBtn {
+.Form .Form-pickerBtn,
+.Form .Input-Colour {
   font-style: italic;
   height: 46px;
 }
