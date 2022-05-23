@@ -20,7 +20,7 @@ const initialState = {
   weightErrorMsg: '',
   allOrdersFromDB: [],
   allOrdersFromDBReversed: [],
-  hasConnected: false,
+  showColourPicker: false,
 }
 
 //mutation
@@ -69,8 +69,8 @@ export const boxSlice = createSlice({
       state.allOrdersFromDB = allOrders.payload;
       state.allOrdersFromDBReversed = state.allOrdersFromDB.reverse();
     },
-    setHasConnected: (state, hasConnected) => {
-      state.hasConnected = hasConnected.payload;
+    setShowColourPicker: (state, clickedBtn) => {
+      state.showColourPicker = clickedBtn.payload;
     }
 
   },
@@ -79,6 +79,6 @@ export const boxSlice = createSlice({
 export const { setColour, setShowNewColour, setName, setWeight,
   setCountry, setForm, setShowNameError, setShowWeightError,
   setShowCountryError, setWeightErrorMsg, setAllOrdersFromDB,
-  setHasConnected } = boxSlice.actions;
+  setShowColourPicker } = boxSlice.actions;
 
 export default boxSlice.reducer;

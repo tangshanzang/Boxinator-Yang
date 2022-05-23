@@ -1,12 +1,14 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError, setWeightErrorMsg, setAllOrdersFromDB } from '../../store/boxReducer';
+import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError, setWeightErrorMsg, setAllOrdersFromDB, setShowColourPicker } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
 import { useEffect, useRef } from 'react';
+import './createOrder.css'
 
 const CreateOrder = () => {
-  const { formValues, showNewColour, showNameError, showWeightError, showCountryError, weightErrorMsg } = useSelector((state) => state.boxer);
+  const { formValues, showNewColour, showNameError, showWeightError, showCountryError, weightErrorMsg, showColourPicker } = useSelector((state) => state.boxer);
   const dispatch = useDispatch();
   const ws = useRef(null);
+  console.log(showColourPicker);
 
   useEffect(() => {
     ws.current = new WebSocket('ws://localhost:4000/createorder');
@@ -158,9 +160,13 @@ const CreateOrder = () => {
     }
   }
 
+  const test = () => {
+    dispatch(setShowColourPicker(true));
+  }
+
   return (
 
-    <div>
+    <div className="Form-Container">
       <form className="Form">
         <div className="Form-Name">
           <label className="Label-Name">Name</label>
@@ -175,8 +181,9 @@ const CreateOrder = () => {
         </div>
 
         <div className="Form-Colour">
-          <label className="Label-Colour">Colour</label>
-          <input type="color" className="Input-Colour" onInput={(e) => { handleInput(e) }} value={rgbToHex(formValues.colour)} />
+          <label className="Label-Colour">Box Colour</label>
+          {showColourPicker ? <input type="color" className="Input-Colour" onInput={(e) => { handleInput(e) }} value={rgbToHex(formValues.colour)} />
+            : <button className="Form-pickerBtn" onClick={test}>Click to show colour picker</button>}
           {showNewColour && <p className="newColour" >Blue colour is disabled, your selected colour would be:
             <span style={newColourStyle()}>{' Your New Colour'}</span>
           </p>}
@@ -194,8 +201,8 @@ const CreateOrder = () => {
           {showCountryError && <p>Please select country</p>}
         </div>
 
-        <div className="Form-SaveBtn">
-          <button onClick={(e) => { handleSubmit(e) }}>Save</button>
+        <div className="Form-SaveBtn-Container">
+          <button className="Form-SaveBtn" onClick={(e) => { handleSubmit(e) }}>Save</button>
         </div>
       </form>
     </div>
