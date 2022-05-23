@@ -2,6 +2,7 @@ import React from 'react'
 import './orderDetails.css'
 
 const orderDetails = (props) => {
+
   return (
     <div className='detailContainer'>
       <div className="receiver">
@@ -24,8 +25,7 @@ const orderDetails = (props) => {
         <div className="title">
           <p>Box colour</p>
         </div>
-        <div className="boxColour-Value">
-          <p>{props.order.colour}</p>
+        <div className="boxColour-Value" style={{ backgroundColor: props.order.colour }}>
         </div>
       </div>
       <div className="shippingCost">
