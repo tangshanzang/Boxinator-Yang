@@ -1,0 +1,13 @@
+.headerContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  place-items: center;
+  margin: 2em;
+}
+
+.headerContainer button {
+  width: 10em;
+  height: 3em;
+  border-radius: 10px;
+  background-image: linear-gradient(to right, #70ba70, white, #70ba70);
+}
