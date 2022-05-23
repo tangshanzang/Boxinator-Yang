@@ -172,7 +172,7 @@ const CreateOrder = () => {
         </div>
 
         <div className="Form-Weight">
-          <label className="Label-Weight">Weight</label>
+          <label className="Label-Weight">Weight (kg)</label>
           <input type="number" className="Input-Weight" onInput={(e) => { handleInput(e) }} value={formValues.weight} />
           {showWeightError && <p>{weightErrorMsg}</p>}
         </div>
