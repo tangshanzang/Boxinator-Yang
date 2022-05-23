@@ -20,7 +20,10 @@ p {
   border-right: solid;
 }
 
-.boxColour {
+.receiver,
+.weight,
+.boxColour,
+.shippingCost {
   display: grid;
   grid-template-rows: 1fr 1fr;
 }
