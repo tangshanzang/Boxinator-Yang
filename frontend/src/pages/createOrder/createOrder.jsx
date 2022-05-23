@@ -1,10 +1,36 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError, setWeightErrorMsg } from '../../store/boxReducer';
+import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError, setWeightErrorMsg, setAllOrdersFromDB, setShowColourPicker } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
+import { useEffect, useRef } from 'react';
+import './createOrder.css'
 
 const CreateOrder = () => {
-  const { formValues, showNewColour, showNameError, showWeightError, showCountryError, weightErrorMsg } = useSelector((state) => state.boxer);
+  const { formValues, showNewColour, showNameError, showWeightError, showCountryError, weightErrorMsg, showColourPicker } = useSelector((state) => state.boxer);
   const dispatch = useDispatch();
+  const ws = useRef(null);
+  console.log(showColourPicker);
+
+  useEffect(() => {
+    ws.current = new WebSocket('ws://localhost:4000/createorder');
+    ws.current.onopen = () => console.log("ws opened");
+    ws.current.onclose = () => console.log("ws closed");
+
+    const wsCurrent = ws.current;
+
+    return () => {
+      wsCurrent.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!ws.current) return;
+
+    ws.current.onmessage = e => {
+      let orderListFromDB = JSON.parse(e.data);
+      dispatch(setAllOrdersFromDB(orderListFromDB));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const newColourStyle = () => {
     let oldColour = formValues.colour;
@@ -16,29 +42,29 @@ const CreateOrder = () => {
   }
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
+    // If validation pass
+    if (formValidation()) {
+      // Create obj
+      const newOrder = {
+        name: formValues.name,
+        weight: formValues.weight,
+        colour: rgbToHex(formValues.colour),
+        country: formValues.country,
+      }
 
-    // Validation check for required fields
-    formValidation();
+      ws.current.send(
+        JSON.stringify(newOrder)
+      )
 
-    const newOrder = {
-      name: formValues.name,
-      weight: formValues.weight,
-      colour: rgbToHex(formValues.colour),
-      country: formValues.country,
+      // Confirmation && reset form
+      alert("Order has been saved");
+      resetForm();
     }
-
-    // add WS here ws.send?
-
-    // add a reset form here after sending through ws;
-    // wrap this resetForm() in send function as it should only reset IF we can succesfully save order;
-    // resetForm();
-
-    console.log(newOrder);
   }
 
   const formValidation = () => {
+    let isFormValid = true;
     Object.entries(formValues).forEach(([key, value]) => {
       // no error for colour because default colour will always exist (black 0,0,0)
       let showErrorMsg;
@@ -46,6 +72,7 @@ const CreateOrder = () => {
         case 'name': {
           if (value === '') {
             showErrorMsg = true;
+            isFormValid = false;
           }
           else {
             showErrorMsg = false;
@@ -56,6 +83,7 @@ const CreateOrder = () => {
         case 'weight': {
           if (value === '') {
             showErrorMsg = true;
+            isFormValid = false;
             dispatch(setWeightErrorMsg('Please enter weight'));
           }
           else {
@@ -67,6 +95,7 @@ const CreateOrder = () => {
         case 'country': {
           if (value === 'default') {
             showErrorMsg = true;
+            isFormValid = false;
           }
           else {
             showErrorMsg = false;
@@ -75,22 +104,17 @@ const CreateOrder = () => {
           break;
         }
         default: {
-          console.log('helper meow');
         }
-
       }
     })
+    return isFormValid;
   }
 
   const resetForm = () => {
     let resetedForm = {
       name: '',
       weight: '',
-      colour: {
-        r: 0,
-        g: 0,
-        b: 0,
-      },
+      colour: '',
       country: 'default',
       cost: '',
     }
@@ -105,16 +129,11 @@ const CreateOrder = () => {
         break;
       }
       case 'Input-Weight': {
-        // const min = 0.1;
-        // const max = 100;
-        // const value = Math.max(min, Math.min(max, Number(e.target.value)))
-        // dispatch(setWeight(value));
-        // break;
-
         // According to the description i got, it should reset to 0.
         // However it would create a problem for cost calculation, thus i put it to 0.1
         if (e.target.value < 0.1) {
           dispatch(setWeightErrorMsg('Invalid inpiut, weight has been reset to our minimum weight'));
+          dispatch(setShowWeightError(true));
           dispatch(setWeight(0.1));
         }
         else {
@@ -137,14 +156,17 @@ const CreateOrder = () => {
         break;
       }
       default: {
-        console.log('voof')
       }
     }
   }
 
+  const test = () => {
+    dispatch(setShowColourPicker(true));
+  }
+
   return (
 
-    <div>
+    <div className="Form-Container">
       <form className="Form">
         <div className="Form-Name">
           <label className="Label-Name">Name</label>
@@ -159,8 +181,9 @@ const CreateOrder = () => {
         </div>
 
         <div className="Form-Colour">
-          <label className="Label-Colour">Colour</label>
-          <input type="color" className="Input-Colour" onInput={(e) => { handleInput(e) }} value={rgbToHex(formValues.colour)} />
+          <label className="Label-Colour">Box Colour</label>
+          {showColourPicker ? <input type="color" className="Input-Colour" onInput={(e) => { handleInput(e) }} value={rgbToHex(formValues.colour)} />
+            : <button className="Form-pickerBtn" onClick={test}>Click to show colour picker</button>}
           {showNewColour && <p className="newColour" >Blue colour is disabled, your selected colour would be:
             <span style={newColourStyle()}>{' Your New Colour'}</span>
           </p>}
@@ -178,8 +201,8 @@ const CreateOrder = () => {
           {showCountryError && <p>Please select country</p>}
         </div>
 
-        <div className="Form-SaveBtn">
-          <button onClick={(e) => { handleSubmit(e) }}>Save</button>
+        <div className="Form-SaveBtn-Container">
+          <button className="Form-SaveBtn" onClick={(e) => { handleSubmit(e) }}>Save</button>
         </div>
       </form>
     </div>
