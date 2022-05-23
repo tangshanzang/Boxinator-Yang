@@ -40,20 +40,17 @@ const ListOrder = () => {
     ws.current = new WebSocket('ws://localhost:4000/getorders');
     const wsCurrent = ws.current;
 
-    return () => {
-      wsCurrent.close();
-    };
-  }, []);
+    wsCurrent.onopen = () => wsCurrent.send(JSON.stringify('Load order lists'));
 
-  useEffect(() => {
-    if (!ws.current) return;
-
-    ws.current.onopen = () => ws.current.send(JSON.stringify('Load order lists'));
-
-    ws.current.onmessage = e => {
+    wsCurrent.onmessage = e => {
       let orderListFromDB = JSON.parse(e.data);
       dispatch(setAllOrdersFromDB(orderListFromDB));
     };
+    // Warning close before connection established?
+    // return () => {
+    //   wsCurrent.close();
+    // };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

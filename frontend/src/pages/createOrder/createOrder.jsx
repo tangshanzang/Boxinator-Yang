@@ -11,21 +11,16 @@ const CreateOrder = () => {
 
   useEffect(() => {
     ws.current = new WebSocket('ws://localhost:4000/createorder');
-
     const wsCurrent = ws.current;
-
-    return () => {
-      wsCurrent.close();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!ws.current) return;
-
-    ws.current.onmessage = e => {
+    wsCurrent.onmessage = e => {
       let orderListFromDB = JSON.parse(e.data);
       dispatch(setAllOrdersFromDB(orderListFromDB));
     };
+    // Warning close before connection established?
+    // return () => {
+    //   wsCurrent.close();
+    // };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
