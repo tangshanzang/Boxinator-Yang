@@ -7,7 +7,7 @@ username: root
 password: root
 
 FrontEnd
-npm i
+npm i,
 npm start
 
 
