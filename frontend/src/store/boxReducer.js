@@ -5,11 +5,7 @@ const initialState = {
   formValues: {
     name: '',
     weight: '',
-    colour: {
-      r: 0,
-      g: 0,
-      b: 0,
-    },
+    colour: '',
     country: 'default',
     cost: '',
   },
@@ -21,6 +17,7 @@ const initialState = {
   allOrdersFromDB: [],
   allOrdersFromDBReversed: [],
   showColourPicker: false,
+  showColourError: false,
 }
 
 //mutation
@@ -31,6 +28,7 @@ export const boxSlice = createSlice({
     setColour: (state, selectedColour) => {
       selectedColour.payload.b = 0;
       state.formValues.colour = selectedColour.payload;
+      state.showColourError = false;
     },
     setShowNewColour: (state) => {
       state.showNewColour = true;
@@ -50,6 +48,7 @@ export const boxSlice = createSlice({
       state.showNameError = false;
       state.showWeightError = false;
       state.showCountryError = false;
+      state.showColourError = false;
     },
     setShowNameError: (state, bool) => {
       state.showNameError = bool.payload;
@@ -69,14 +68,16 @@ export const boxSlice = createSlice({
     },
     setShowColourPicker: (state, clickedBtn) => {
       state.showColourPicker = clickedBtn.payload;
-    }
-
+    },
+    setShowColourError: (state, bool) => {
+      state.showColourError = bool.payload;
+    },
   },
 })
 
 export const { setColour, setShowNewColour, setName, setWeight,
   setCountry, setForm, setShowNameError, setShowWeightError,
   setShowCountryError, setWeightErrorMsg, setAllOrdersFromDB,
-  setShowColourPicker } = boxSlice.actions;
+  setShowColourPicker, setShowColourError } = boxSlice.actions;
 
 export default boxSlice.reducer;

@@ -1,11 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError, setWeightErrorMsg, setAllOrdersFromDB, setShowColourPicker } from '../../store/boxReducer';
+import { setColour, setShowNewColour, setName, setWeight, setCountry, setForm, setShowNameError, setShowWeightError, setShowCountryError, setWeightErrorMsg, setAllOrdersFromDB, setShowColourPicker, setShowColourError } from '../../store/boxReducer';
 import { hexToRgb, rgbToHex } from '../../helper/myHelper';
 import { useEffect, useRef } from 'react';
 import './createOrder.css'
 
 const CreateOrder = () => {
-  const { formValues, showNewColour, showNameError, showWeightError, showCountryError, weightErrorMsg, showColourPicker } = useSelector((state) => state.boxer);
+  const { formValues, showNewColour, showNameError, showWeightError, showCountryError, weightErrorMsg, showColourPicker, showColourError } = useSelector((state) => state.boxer);
   const dispatch = useDispatch();
   const ws = useRef(null);
 
@@ -63,7 +63,6 @@ const CreateOrder = () => {
   const formValidation = () => {
     let isFormValid = true;
     Object.entries(formValues).forEach(([key, value]) => {
-      // no error for colour because default colour will always exist (black 0,0,0)
       let showErrorMsg;
       switch (key) {
         case 'name': {
@@ -87,6 +86,17 @@ const CreateOrder = () => {
             showErrorMsg = false;
           }
           dispatch(setShowWeightError(showErrorMsg));
+          break;
+        }
+        case 'colour': {
+          if (value === '') {
+            showErrorMsg = true;
+            isFormValid = false;
+          }
+          else {
+            showErrorMsg = false;
+          }
+          dispatch(setShowColourError(showErrorMsg));
           break;
         }
         case 'country': {
@@ -184,6 +194,7 @@ const CreateOrder = () => {
           {showNewColour && <p className="newColour" >Blue colour is disabled, your selected colour would be:
             <span style={newColourStyle()}>{' Your New Colour'}</span>
           </p>}
+          {showColourError && <p>Please select colour</p>}
         </div>
 
         <div className="Form-Country">
