@@ -1,0 +1,21 @@
+.detailContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 1em 3em;
+  border: solid;
+}
+
+p {
+  margin: 8px 10px;
+  font: message-box;
+}
+
+.title {
+  border-bottom: solid;
+}
+
+.receiver,
+.weight,
+.boxColour {
+  border-right: solid;
+}
