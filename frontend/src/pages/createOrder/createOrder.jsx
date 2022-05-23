@@ -8,12 +8,9 @@ const CreateOrder = () => {
   const { formValues, showNewColour, showNameError, showWeightError, showCountryError, weightErrorMsg, showColourPicker } = useSelector((state) => state.boxer);
   const dispatch = useDispatch();
   const ws = useRef(null);
-  console.log(showColourPicker);
 
   useEffect(() => {
     ws.current = new WebSocket('ws://localhost:4000/createorder');
-    ws.current.onopen = () => console.log("ws opened");
-    ws.current.onclose = () => console.log("ws closed");
 
     const wsCurrent = ws.current;
 

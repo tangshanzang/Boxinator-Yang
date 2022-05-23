@@ -29,10 +29,8 @@ export const boxSlice = createSlice({
   initialState,
   reducers: {
     setColour: (state, selectedColour) => {
-      // console.log(selectedColour);
       selectedColour.payload.b = 0;
       state.formValues.colour = selectedColour.payload;
-      // console.log(state.formValues.colour)
     },
     setShowNewColour: (state) => {
       state.showNewColour = true;
